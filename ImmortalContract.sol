@@ -1845,19 +1845,16 @@ function publicMint() external payable {
     }
 
     // Airdrop tokens to multiple addresses
-function airdrop(address[] calldata recipients, uint256[] calldata amounts) external onlyOwner {
-    require(recipients.length == amounts.length, "Arrays length mismatch");
+    function airdrop(address[] calldata recipients, uint256[] calldata amounts) external onlyOwner {
+        require(recipients.length == amounts.length, "Arrays length mismatch");
 
-    for (uint256 i = 0; i < recipients.length; i++) {
-        address recipient = recipients[i];
-        uint256 amount = amounts[i];
-        require(amount > 0 && amount <= 2, "Invalid amount");
+        for (uint256 i = 0; i < recipients.length; i++) {
+            address recipient = recipients[i];
+            uint256 amount = amounts[i];
+            require(amount > 0 && amount <= 2, "Invalid amount");
 
-        for (uint256 j = 0; j < amount; j++) {
-            uint256 tokenId = j + 5;  // Assuming token IDs start from 5
-
-            // Transfer the token with the respective token ID from the contract owner to the recipient
-            _transfer(owner(), recipient, tokenId);
+            for (uint256 j = 0; j < amount; j++) {
+            mint(recipient);
         }
     }
 }
@@ -1868,10 +1865,11 @@ function airdrop(address[] calldata recipients, uint256[] calldata amounts) exte
         uint256 totalBalance = address(this).balance;
         require(totalBalance > 0, "No funds to withdraw");
 
-        uint256 team1Share = (totalBalance * 50) / 100;
+                                            //percentages
+        uint256 team1Share = (totalBalance * 64) / 100;
         uint256 team2Share = (totalBalance * 20) / 100;
-        uint256 team3Share = (totalBalance * 15) / 100;
-        uint256 team4Share =(totalBalance * 15) / 100;
+        uint256 team3Share = (totalBalance * 10) / 100;
+        uint256 team4Share =(totalBalance * 6) / 100;
 
         team1.transfer(team1Share);
         team2.transfer(team2Share);
